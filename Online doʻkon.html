@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UZ SHOP — Online Do‘kon</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
+    color:#111827;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:#111827;
+    color:white;
+    padding:14px;
+    box-shadow:0 2px 12px #0003;
+}
+
+.top{
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.logo{
+    font-size:23px;
+    font-weight:bold;
+}
+
+.cartBtn{
+    background:#22c55e;
+    color:white;
+    border:0;
+    padding:11px 15px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+.search{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:16px;
+    margin-bottom:15px;
+    outline:none;
+}
+
+.categories{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    margin-bottom:20px;
+    padding-bottom:3px;
+}
+
+.categories button{
+    border:1px solid #ddd;
+    background:white;
+    padding:10px 14px;
+    border-radius:10px;
+    white-space:nowrap;
+}
+
+.categories button.active{
+    background:#111827;
+    color:white;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 3px 14px #0001;
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+.card img{
+    width:100%;
+    height:190px;
+    object-fit:cover;
+}
+
+.cardBody{
+    padding:13px;
+}
+
+.card h3{
+    font-size:17px;
+    margin-bottom:6px;
+}
+
+.category{
+    color:#777;
+    font-size:13px;
+}
+
+.price{
+    font-size:18px;
+    font-weight:bold;
+    margin:9px 0;
+}
+
+.old{
+    color:#999;
+    text-decoration:line-through;
+    font-size:12px;
+    margin-left:5px;
+}
+
+.add{
+    width:100%;
+    padding:11px;
+    border:0;
+    border-radius:10px;
+    background:#111827;
+    color:white;
+    font-weight:bold;
+}
+
+.empty{
+    width:100%;
+    text-align:center;
+    padding:50px 10px;
+    color:#777;
+}
+
+.admin{
+    margin-top:30px;
+    background:#111827;
+    color:white;
+    padding:18px;
+    border-radius:16px;
+}
+
+.admin h2{
+    margin-bottom:12px;
+}
+
+.admin input,
+.admin select{
+    width:100%;
+    padding:12px;
+    margin:5px 0;
+    border:0;
+    border-radius:9px;
+    outline:none;
+}
+
+.adminAdd{
+    background:#22c55e;
+    color:white;
+    border:0;
+    padding:11px 15px;
+    border-radius:9px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+.adminProduct{
+    background:white;
+    color:#111;
+    margin-top:9px;
+    padding:10px;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+}
+
+.edit{
+    background:#f59e0b;
+    color:white;
+    border:0;
+    padding:8px 10px;
+    border-radius:8px;
+}
+
+.delete{
+    background:#ef4444;
+    color:white;
+    border:0;
+    padding:8px 10px;
+    border-radius:8px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#0009;
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+}
+
+.modalBox{
+    width:100%;
+    max-width:500px;
+    max-height:90vh;
+    overflow:auto;
+    background:white;
+    border-radius:18px;
+    padding:20px;
+}
+
+.modalTop{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.close{
+    background:#eee;
+    border:0;
+    padding:9px 12px;
+    border-radius:9px;
+}
+
+.cartItem{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border-bottom:1px solid #eee;
+    padding:12px 0;
+}
+
+.cartItem img{
+    width:65px;
+    height:65px;
+    border-radius:10px;
+    object-fit:cover;
+}
+
+.cartInfo{
+    flex:1;
+}
+
+.qty{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-top:6px;
+}
+
+.qty button{
+    border:0;
+    background:#eee;
+    padding:5px 9px;
+    border-radius:6px;
+}
+
+.total{
+    font-size:21px;
+    font-weight:bold;
+    margin:18px 0;
+}
+
+.checkout{
+    width:100%;
+    border:0;
+    padding:13px;
+    border-radius:10px;
+    background:#22c55e;
+    color:white;
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+@media(max-width:500px){
+
+    .container{
+        padding:12px;
+    }
+
+    .products{
+        grid-template-columns:repeat(2,1fr);
+        gap:10px;
+    }
+
+    .card img{
+        height:140px;
+    }
+
+    .card h3{
+        font-size:14px;
+    }
+
+    .price{
+        font-size:15px;
+    }
+
+    .logo{
+        font-size:19px;
+    }
+
+    .cartBtn{
+        font-size:12px;
+        padding:9px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="top">
+
+<div class="logo">
+🛍️ UZ SHOP
+</div>
+
+<button class="cartBtn" onclick="openCart()">
+🛒 Savatcha (<span id="cartCount">0</span>)
+</button>
+
+</div>
+</header>
+
+<div class="container">
+
+<input
+id="search"
+class="search"
+placeholder="🔎 Mahsulot qidirish..."
+oninput="renderProducts()"
+>
+
+<div id="categories" class="categories"></div>
+
+<div id="products" class="products"></div>
+
+<div class="admin">
+
+<h2>👨‍💼 ADMIN PANEL</h2>
+
+<input id="pName" placeholder="Mahsulot nomi">
+
+<input
+id="pPrice"
+type="number"
+placeholder="Narxi"
+>
+
+<input
+id="pOldPrice"
+type="number"
+placeholder="Eski narxi (ixtiyoriy)"
+>
+
+<input
+id="pImage"
+placeholder="Rasm URL manzili"
+>
+
+<select id="pCategory">
+
+<option>Telefon</option>
+<option>Kiyim</option>
+<option>Oyoq kiyim</option>
+<option>Elektronika</option>
+<option>Boshqa</option>
+
+</select>
+
+<button class="adminAdd" onclick="addProduct()">
+➕ Mahsulot qo‘shish
+</button>
+
+<div id="adminProducts"></div>
+
+</div>
+
+</div>
+
+<footer>
+UZ SHOP © 2026
+</footer>
+
+
+<!-- SAVATCHA -->
+
+<div id="cartModal" class="modal">
+
+<div class="modalBox">
+
+<div class="modalTop">
+
+<h2>🛒 Savatcha</h2>
+
+<button class="close" onclick="closeCart()">
+✕
+</button>
+
+</div>
+
+<div id="cartItems"></div>
+
+<div class="total">
+Jami: <span id="total">0 so‘m</span>
+</div>
+
+<button class="checkout" onclick="checkout()">
+📦 BUYURTMA BERISH
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+let products =
+JSON.parse(localStorage.getItem("products")) || [
+
+{
+id:1,
+name:"iPhone 15 Pro",
+price:12500000,
+oldPrice:14000000,
+category:"Telefon",
+image:"https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600"
+},
+
+{
+id:2,
+name:"Samsung Galaxy",
+price:8500000,
+oldPrice:9500000,
+category:"Telefon",
+image:"https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600"
+},
+
+{
+id:3,
+name:"Nike Air Max",
+price:950000,
+oldPrice:1200000,
+category:"Oyoq kiyim",
+image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"
+},
+
+{
+id:4,
+name:"Erkaklar futbolkasi",
+price:180000,
+oldPrice:250000,
+category:"Kiyim",
+image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600"
+},
+
+{
+id:5,
+name:"Bluetooth quloqchin",
+price:320000,
+oldPrice:450000,
+category:"Elektronika",
+image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600"
+}
+
+];
+
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+let selectedCategory="Barchasi";
+
+let editId=null;
+
+
+function save(){
+
+localStorage.setItem(
+"products",
+JSON.stringify(products)
+);
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+}
+
+
+function money(number){
+
+return Number(number).toLocaleString("uz-UZ")
++" so‘m";
+
+}
+
+
+function renderCategories(){
+
+let cats=[
+"Barchasi",
+...new Set(products.map(p=>p.category))
+];
+
+document.getElementById("categories").innerHTML=
+
+cats.map(category=>`
+
+<button
+class="${selectedCategory===category?'active':''}"
+onclick="
+selectedCategory='${category}';
+renderCategories();
+renderProducts();
+">
+
+${category}
+
+</button>
+
+`).join("");
+
+}
+
+
+function renderProducts(){
+
+let search=
+document.getElementById("search")
+.value
+.toLowerCase()
+.trim();
+
+
+let list=products.filter(product=>{
+
+let categoryOK=
+selectedCategory==="Barchasi"
+||
+product.category===selectedCategory;
+
+let searchOK=
+product.name
+.toLowerCase()
+.includes(search);
+
+return categoryOK && searchOK;
+
+});
+
+
+if(!list.length){
+
+document.getElementById("products").innerHTML=
+`
+<div class="empty">
+😔 Mahsulot topilmadi
+</div>
+`;
+
+return;
+
+}
+
+
+document.getElementById("products").innerHTML=
+
+list.map(product=>`
+
+<div class="card">
+
+<img
+src="${product.image}"
+onerror="
+this.src='https://via.placeholder.com/500x400?text=No+Image'
+"
+>
+
+<div class="cardBody">
+
+<h3>
+${product.name}
+</h3>
+
+<div class="category">
+${product.category}
+</div>
+
+<div class="price">
+
+${money(product.price)}
+
+${
+product.oldPrice
+?
+`<span class="old">
+${money(product.oldPrice)}
+</span>`
+:
+""
+}
+
+</div>
+
+<button
+class="add"
+onclick="addCart(${product.id})"
+>
+🛒 Savatga qo‘shish
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function addCart(id){
+
+let item=
+cart.find(x=>x.id===id);
+
+if(item){
+
+item.qty++;
+
+}else{
+
+cart.push({
+id:id,
+qty:1
+});
+
+}
+
+save();
+
+updateCartCount();
+
+alert("Mahsulot savatchaga qo‘shildi ✅");
+
+}
+
+
+function updateCartCount(){
+
+let count=
+cart.reduce(
+(sum,item)=>sum+item.qty,
+0
+);
+
+document.getElementById(
+"cartCount"
+).innerText=count;
+
+}
+
+
+function openCart(){
+
+document.getElementById(
+"cartModal"
+).style.display="flex";
+
+renderCart();
+
+}
+
+
+function closeCart(){
+
+document.getElementById(
+"cartModal"
+).style.display="none";
+
+}
+
+
+function renderCart(){
+
+if(!cart.length){
+
+document.getElementById(
+"cartItems"
+).innerHTML=
+`
+<div class="empty">
+🛒 Savatcha bo‘sh
+</div>
+`;
+
+document.getElementById(
+"total"
+).innerText="0 so‘m";
+
+return;
+
+}
+
+
+let total=0;
+
+
+document.getElementById(
+"cartItems"
+).innerHTML=
+
+cart.map(item=>{
+
+let product=
+products.find(
+p=>p.id===item.id
+);
+
+if(!product)return "";
+
+let sum=
+product.price*item.qty;
+
+total+=sum;
+
+
+return `
+
+<div class="cartItem">
+
+<img src="${product.image}">
+
+<div class="cartInfo">
+
+<b>
+${product.name}
+</b>
+
+<div>
+${money(product.price)}
+</div>
+
+<div class="qty">
+
+<button
+onclick="changeQty(${product.id},-1)"
+>
+−
+</button>
+
+<span>
+${item.qty}
+</span>
+
+<button
+onclick="changeQty(${product.id},1)"
+>
++
+</button>
+
+<button
+onclick="removeCart(${product.id})"
+>
+🗑️
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+
+document.getElementById(
+"total"
+).innerText=money(total);
+
+}
+
+
+function changeQty(id,number){
+
+let item=
+cart.find(x=>x.id===id);
+
+if(!item)return;
+
+item.qty+=number;
+
+if(item.qty<=0){
+
+cart=
+cart.filter(x=>x.id!==id);
+
+}
+
+save();
+
+updateCartCount();
+
+renderCart();
+
+}
+
+
+function removeCart(id){
+
+cart=
+cart.filter(x=>x.id!==id);
+
+save();
+
+updateCartCount();
+
+renderCart();
+
+}
+
+
+function checkout(){
+
+if(!cart.length){
+
+alert("Savatcha bo‘sh!");
+
+return;
+
+}
+
+
+let name=
+prompt("👤 Ismingizni kiriting:");
+
+if(!name)return;
+
+
+let phone=
+prompt("📞 Telefon raqamingizni kiriting:");
+
+if(!phone)return;
+
+
+let order="";
+
+cart.forEach(item=>{
+
+let product=
+products.find(
+p=>p.id===item.id
+);
+
+if(product){
+
+order+=
+product.name+
+" x "+
+item.qty+
+"\n";
+
+}
+
+});
+
+
+alert(
+"✅ BUYURTMA QABUL QILINDI!\n\n"+
+"Mijoz: "+name+
+"\nTelefon: "+phone+
+"\n\nMahsulotlar:\n"+
+order+
+"\nTez orada siz bilan bog‘lanamiz."
+);
+
+
+cart=[];
+
+save();
+
+updateCartCount();
+
+renderCart();
+
+}
+
+
+function addProduct(){
+
+let name=
+document.getElementById("pName")
+.value.trim();
+
+let price=
+Number(
+document.getElementById("pPrice")
+.value
+);
+
+let oldPrice=
+Number(
+document.getElementById("pOldPrice")
+.value
+);
+
+let image=
+document.getElementById("pImage")
+.value.trim();
+
+let category=
+document.getElementById("pCategory")
+.value;
+
+
+if(!name || !price){
+
+alert(
+"Mahsulot nomi va narxini kiriting!"
+);
+
+return;
+
+}
+
+
+if(!image){
+
+image=
+"https://via.placeholder.com/500x400?text="+
+encodeURIComponent(name);
+
+}
+
+
+if(editId){
+
+let product=
+products.find(
+p=>p.id===editId
+);
+
+product.name=name;
+product.price=price;
+product.oldPrice=oldPrice;
+product.image=image;
+product.category=category;
+
+editId=null;
+
+alert(
+"Mahsulot yangilandi ✅"
+);
+
+}else{
+
+products.push({
+
+id:Date.now(),
+
+name:name,
+
+price:price,
+
+oldPrice:oldPrice,
+
+category:category,
+
+image:image
+
+});
+
+alert(
+"Mahsulot qo‘shildi ✅"
+);
+
+}
+
+
+document.getElementById("pName").value="";
+document.getElementById("pPrice").value="";
+document.getElementById("pOldPrice").value="";
+document.getElementById("pImage").value="";
+
+save();
+
+renderCategories();
+
+renderProducts();
+
+renderAdmin();
+
+}
+
+
+function renderAdmin(){
+
+document.getElementById(
+"adminProducts"
+).innerHTML=
+
+products.map(product=>`
+
+<div class="adminProduct">
+
+<div>
+
+<b>
+${product.name}
+</b>
+
+<br>
+
+<small>
+${money(product.price)}
+</small>
+
+</div>
+
+<div>
+
+<button
+class="edit"
+onclick="editProduct(${product.id})"
+>
+✏️
+</button>
+
+<button
+class="delete"
+onclick="deleteProduct(${product.id})"
+>
+🗑️
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function editProduct(id){
+
+let product=
+products.find(
+p=>p.id===id
+);
+
+if(!product)return;
+
+editId=id;
+
+document.getElementById(
+"pName"
+).value=product.name;
+
+document.getElementById(
+"pPrice"
+).value=product.price;
+
+document.getElementById(
+"pOldPrice"
+).value=
+product.oldPrice || "";
+
+document.getElementById(
+"pImage"
+).value=product.image;
+
+document.getElementById(
+"pCategory"
+).value=product.category;
+
+
+window.scrollTo({
+
+top:
+document.querySelector(
+".admin"
+).offsetTop,
+
+behavior:"smooth"
+
+});
+
+}
+
+
+function deleteProduct(id){
+
+if(
+!confirm(
+"Bu mahsulotni o‘chirishni xohlaysizmi?"
+)
+)return;
+
+
+products=
+products.filter(
+p=>p.id!==id
+);
+
+
+cart=
+cart.filter(
+item=>
+products.some(
+p=>p.id===item.id
+)
+);
+
+
+save();
+
+renderCategories();
+
+renderProducts();
+
+renderAdmin();
+
+updateCartCount();
+
+}
+
+
+renderCategories();
+
+renderProducts();
+
+renderAdmin();
+
+updateCartCount();
+
+</script>
+
+</body>
+</html>
